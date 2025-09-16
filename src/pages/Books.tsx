@@ -20,71 +20,63 @@ export default function Books() {
   }, []);
 
   return (
-    <div className="container mx-auto max-w-6xl bg-white rounded-lg shadow-md overflow-hidden">
-      <header>
-        <h1 className="text-center text-3xl font-bold text-blue-600 py-6">
-          Çok Kaynaklı Veri Platformu
+    <div className="min-h-screen bg-gray-50">
+      {/* Hero */}
+      <header className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-14 shadow-lg">
+        <h1 className="text-4xl font-extrabold text-center">
+          📚 Kitap Koleksiyonu
         </h1>
+        <p className="text-center mt-3 text-lg opacity-90">
+          En güncel kitap verilerini keşfet ve merakını gider.
+        </p>
       </header>
 
-      {/* Sekmeler */}
-      <div className="flex border-b">
-        <a href="/laptops" className="px-6 py-3 text-gray-600 hover:text-blue-600">
-          Laptops
-        </a>
-        <a href="/books" className="px-6 py-3 text-blue-600 border-b-4 border-blue-600 font-semibold">
-          Books
-        </a>
-        <a href="/quotes" className="px-6 py-3 text-gray-600 hover:text-blue-600">
-          Quotes
-        </a>
-        <a href="/products" className="px-6 py-3 text-gray-600 hover:text-blue-600">
-          Products
-        </a>
-      </div>
-
       {/* Başlık + adet */}
-      <div className="flex justify-between items-center px-6 py-4 border-b">
-        <h2 className="text-xl font-semibold">Books</h2>
-        <span className="bg-gray-100 px-3 py-1 rounded-full text-sm text-gray-600">
+      <div className="max-w-6xl mx-auto px-6 flex justify-between items-center mt-10 mb-6">
+        <h2 className="text-2xl font-bold text-gray-800">Books</h2>
+        <span className="text-sm bg-purple-100 text-purple-700 px-4 py-1 rounded-full shadow-sm">
           {books.length} kitap bulundu
         </span>
       </div>
 
-      {/* Tablo */}
-      <table className="w-full border-collapse">
-        <thead>
-          <tr className="bg-gray-100 text-left">
-            <th className="p-3 font-semibold uppercase text-sm text-gray-600">Başlık</th>
-            <th className="p-3 font-semibold uppercase text-sm text-gray-600">Yazar</th>
-            <th className="p-3 font-semibold uppercase text-sm text-gray-600">Fiyat</th>
-            <th className="p-3 font-semibold uppercase text-sm text-gray-600">Bağlantı</th>
-          </tr>
-        </thead>
-        <tbody>
-          {books.map((b) => (
-            <tr key={b._id || b.id} className="border-t hover:bg-gray-50">
-              <td className="p-3">{b.title}</td>
-              <td className="p-3">{b.author ?? "N/A"}</td>
-              <td className="p-3">{b.price ?? "N/A"}</td>
-              <td className="p-3">
-                {b.link ? (
-                  <a
-                    href={b.link}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-blue-600 font-semibold hover:underline"
-                  >
-                    Görüntüle
-                  </a>
-                ) : (
-                  "N/A"
-                )}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      {/* Grid Kartlar */}
+      <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pb-16">
+        {books.map((b) => (
+          <div
+            key={b._id || b.id}
+            className="bg-white rounded-xl shadow-md hover:shadow-xl hover:scale-[1.02] transition transform duration-300 p-6 flex flex-col"
+          >
+            {/* Başlık */}
+            <h3 className="text-lg font-semibold mb-2 text-gray-900">
+              {b.title}
+            </h3>
+
+            {/* Yazar */}
+            <span className="inline-block bg-gray-100 text-gray-700 text-xs px-3 py-1 rounded-full mb-3">
+              {b.author ?? "Bilinmeyen Yazar"}
+            </span>
+
+            {/* Fiyat */}
+            <p className="text-xl font-extrabold text-indigo-600 mb-4">
+              {b.price ? `${b.price} ₺` : "Fiyat Yok"}
+            </p>
+
+            {/* Link */}
+            {b.link ? (
+              <a
+                href={b.link}
+                target="_blank"
+                rel="noreferrer"
+                className="mt-auto text-center bg-indigo-600 text-white font-semibold py-2 rounded-lg hover:bg-indigo-700 transition"
+              >
+                Görüntüle
+              </a>
+            ) : (
+              <span className="text-gray-400 text-sm">Bağlantı Yok</span>
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

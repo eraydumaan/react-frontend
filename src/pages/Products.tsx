@@ -7,8 +7,8 @@ interface Product {
   title?: string;
   price?: number;
   stock?: string;
-  link?: string;
   source?: string;
+  link?: string;
 }
 
 export default function Products() {
@@ -21,73 +21,76 @@ export default function Products() {
   }, []);
 
   return (
-    <div className="container mx-auto max-w-6xl bg-white rounded-lg shadow-md overflow-hidden">
-      <header>
-        <h1 className="text-center text-3xl font-bold text-blue-600 py-6">
-          Çok Kaynaklı Veri Platformu
+    <div className="min-h-screen bg-gray-50">
+      {/* Hero */}
+      <header className="bg-gradient-to-r from-green-500 to-emerald-600 text-white py-14 shadow-lg">
+        <h1 className="text-4xl font-extrabold text-center">
+          🛒 Ürün Koleksiyonu
         </h1>
+        <p className="text-center mt-3 text-lg opacity-90">
+          En güncel ürünleri keşfet ve stok durumlarını incele.
+        </p>
       </header>
 
-      {/* Sekmeler */}
-      <div className="flex border-b">
-        <a href="/laptops" className="px-6 py-3 text-gray-600 hover:text-blue-600">
-          Laptops
-        </a>
-        <a href="/books" className="px-6 py-3 text-gray-600 hover:text-blue-600">
-          Books
-        </a>
-        <a href="/quotes" className="px-6 py-3 text-gray-600 hover:text-blue-600">
-          Quotes
-        </a>
-        <a href="/products" className="px-6 py-3 text-blue-600 border-b-4 border-blue-600 font-semibold">
-          Products
-        </a>
-      </div>
-
       {/* Başlık + adet */}
-      <div className="flex justify-between items-center px-6 py-4 border-b">
-        <h2 className="text-xl font-semibold">Products</h2>
-        <span className="bg-gray-100 px-3 py-1 rounded-full text-sm text-gray-600">
+      <div className="max-w-6xl mx-auto px-6 flex justify-between items-center mt-10 mb-6">
+        <h2 className="text-2xl font-bold text-gray-800">Products</h2>
+        <span className="text-sm bg-green-100 text-green-700 px-4 py-1 rounded-full shadow-sm">
           {products.length} ürün bulundu
         </span>
       </div>
 
-      {/* Tablo */}
-      <table className="w-full border-collapse">
-        <thead>
-          <tr className="bg-gray-100 text-left">
-            <th className="p-3 font-semibold uppercase text-sm text-gray-600">Başlık</th>
-            <th className="p-3 font-semibold uppercase text-sm text-gray-600">Fiyat</th>
-            <th className="p-3 font-semibold uppercase text-sm text-gray-600">Stok</th>
-            <th className="p-3 font-semibold uppercase text-sm text-gray-600">Kaynak</th>
-            <th className="p-3 font-semibold uppercase text-sm text-gray-600">Bağlantı</th>
-          </tr>
-        </thead>
-        <tbody>
-          {products.map((p) => (
-            <tr key={p._id || p.id} className="border-t hover:bg-gray-50">
-              <td className="p-3">{p.title}</td>
-              <td className="p-3">{p.price ?? "N/A"}</td>
-              <td className="p-3">{p.stock ?? "N/A"}</td>
-              <td className="p-3">{p.source ?? "N/A"}</td>
-              <td className="p-3">
-                {p.link ? (
-                  <a
-                    href={p.link}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-blue-600 font-semibold hover:underline"
-                  >
-                    Görüntüle
-                  </a>
-                ) : (
-                  "N/A"
-                )}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      {/* Grid Kartlar */}
+      <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pb-16">
+        {products.map((p) => (
+          <div
+            key={p._id || p.id}
+            className="bg-white rounded-xl shadow-md hover:shadow-xl hover:scale-[1.02] transition transform duration-300 p-6 flex flex-col"
+          >
+            {/* Başlık */}
+            <h3 className="text-lg font-semibold mb-2 text-gray-900">
+              {p.title}
+            </h3>
+
+            {/* Fiyat */}
+            <p className="text-xl font-extrabold text-green-600 mb-2">
+              {p.price ? `${p.price} ₺` : "Fiyat Yok"}
+            </p>
+
+            {/* Stok */}
+            <span
+              className={`inline-block px-3 py-1 rounded-full text-xs font-medium w-fit mb-2 ${
+                p.stock?.toLowerCase().includes("var")
+                  ? "bg-green-100 text-green-700"
+                  : "bg-red-100 text-red-600"
+              }`}
+            >
+              {p.stock ?? "Durum Bilinmiyor"}
+            </span>
+
+            {/* Kaynak */}
+            {p.source && (
+              <span className="inline-block bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-full mb-4">
+                {p.source}
+              </span>
+            )}
+
+            {/* Link */}
+            {p.link ? (
+              <a
+                href={p.link}
+                target="_blank"
+                rel="noreferrer"
+                className="mt-auto text-center bg-green-600 text-white font-semibold py-2 rounded-lg hover:bg-green-700 transition"
+              >
+                Görüntüle
+              </a>
+            ) : (
+              <span className="text-gray-400 text-sm">Bağlantı Yok</span>
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
