@@ -27,3 +27,17 @@ export async function fetchLaptops() {
   if (!res.ok) throw new Error(`API Hatası: ${res.status}`);
   return await res.json();
 }
+
+export async function apiFetch(url: string, options: RequestInit = {}) {
+  const token = localStorage.getItem("token");
+  const headers: any = {
+    ...options.headers,
+    Authorization: token ? `Bearer ${token}` : "",
+  };
+
+  const res = await fetch(url, { ...options, headers });
+  if (res.status === 401) {
+    alert("Unauthorized! Please login again.");
+  }
+  return res.json();
+}
