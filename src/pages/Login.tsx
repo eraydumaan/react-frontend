@@ -1,55 +1,78 @@
-import React, { useState } from "react";
-import { login } from "../services/auth";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { login, me } from "../services/auth";
 
-export default function Login({ onLogin }: { onLogin: () => void }) {
+export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    setError(null);
+
     try {
       const data = await login(username, password);
+
+      // ✅ Token'ı sakla
       localStorage.setItem("token", data.access_token);
-      setError("");
-      onLogin(); // Başarılı giriş sonrası App.tsx'te state güncellenir
-    } catch (err) {
-      setError("❌ Giriş başarısız, bilgileri kontrol et.");
+
+      // ✅ Kullanıcı bilgisini test et
+      const user = await me();
+      console.log("Giriş yapan:", user);
+
+      // ✅ Products sayfasına yönlendir
+      navigate("/products");
+    } catch (err: any) {
+      setError(err.message || "Login failed");
     }
-  };
+  }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white shadow-md rounded px-8 pt-6 pb-8 w-96"
-      >
-        <h2 className="text-2xl font-bold mb-4">Giriş Yap</h2>
-        {error && <p className="text-red-500 mb-2">{error}</p>}
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
+        <h1 className="text-2xl font-bold mb-6 text-center text-gray-800">
+          🔐 Login
+        </h1>
 
-        <input
-          type="text"
-          placeholder="Kullanıcı Adı"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          className="border rounded w-full p-2 mb-3"
-        />
+        {error && (
+          <div className="bg-red-100 text-red-700 p-3 rounded mb-4 text-sm">
+            {error}
+          </div>
+        )}
 
-        <input
-          type="password"
-          placeholder="Şifre"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="border rounded w-full p-2 mb-3"
-        />
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-gray-700 text-sm mb-1">Username</label>
+            <input
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="w-full border rounded px-3 py-2 focus:ring focus:ring-blue-200"
+              required
+            />
+          </div>
 
-        <button
-          type="submit"
-          className="bg-blue-500 text-white w-full py-2 rounded hover:bg-blue-600"
-        >
-          Giriş Yap
-        </button>
-      </form>
+          <div>
+            <label className="block text-gray-700 text-sm mb-1">Password</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full border rounded px-3 py-2 focus:ring focus:ring-blue-200"
+              required
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+          >
+            Giriş Yap
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

@@ -4,9 +4,10 @@ import { useState } from "react";
 import Quotes from "./pages/Quotes";
 import Books from "./pages/Books";
 import Laptops from "./pages/Laptops";
+import Crypto from "./pages/Crypto";
 import Products from "./pages/Products";
 import Login from "./pages/Login";
-import Me from "./pages/me";
+import Me from "./pages/Me";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(
@@ -36,6 +37,11 @@ function App() {
           <li>
             <Link to="/quotes" className="text-gray-700 hover:text-blue-600">
               Quotes
+            </Link>
+          </li>
+          <li>
+            <Link to="/crypto" className="text-gray-700 hover:text-blue-600">
+            Crypto 
             </Link>
           </li>
           <li>
@@ -74,12 +80,11 @@ function App() {
         <Route path="/quotes" element={<Quotes />} />
         <Route path="/books" element={<Books />} />
         <Route path="/laptops" element={<Laptops />} />
+        <Route path="/crypto" element={<Crypto />} />
         <Route path="/products" element={<Products />} />
+        <Route path="/login" element={<Login />} />
 
-        <Route
-          path="/login"
-          element={<Login onLogin={() => setIsLoggedIn(true)} />}
-        />
+        
         <Route
           path="/me"
           element={isLoggedIn ? <Me /> : <Navigate to="/login" />}

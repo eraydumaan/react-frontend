@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchProducts } from "../services/api";
+import { fetchProducts, apiFetch } from "../services/api";
 
 interface Product {
   _id?: string;
@@ -9,6 +9,11 @@ interface Product {
   stock?: string;
   source?: string;
   link?: string;
+}
+
+// Kullanıcının kendi ürünleri
+export async function getMyProducts() {
+  return apiFetch("/api/products/mine");
 }
 
 export default function Products() {
